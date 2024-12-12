@@ -1,0 +1,27 @@
+sudo: required
+services:
+  - docker
+before_install:
+  - openssl aes-256-cbc -K $encrypted_93975980c32f_key -iv $encrypted_93975980c32f_iv -in frontend-complex-k8s.json.enc -out frontend-complex-k8s.json -d
+  - curl https://sdk.cloud.gogole.com | bash > /dev/null;
+  - source $HOME/google-cloud-sdk/path.bash.inc
+  - gcloud components update kubectl
+  - gcloud auth activate-service-account --key-file service-account.json
+  - gcloud config set project frontend-complex-k8s
+  - gcloud config set compute/zone us-central1
+  - gcloud container clusters get-credentials frontend-complex-k8s
+    # login to DOCKER CLI
+  - echo "$DOCKER_PWD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker build -t panak4572/frontend-complex-k8s-client-test -f ./client/Dockerfile.dev ./client
+ 
+script:
+  - script:
+  - docker run -e CI=true panak4572/frontend-complex-k8s-client-test npm run test
+  - docker run -e CI=true USERNAME/react-test npm test
+
+deploy:
+  provider: script
+  script: bash ./deploy.sh
+  on:
+    branch: master
+    
