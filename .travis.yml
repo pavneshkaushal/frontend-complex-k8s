@@ -8,6 +8,8 @@ env:
     - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 before_install:
   - docker pull python:3.9
+  - export CLOUDSDK_PYTHON=/usr/bin/python
+  - echo which python
   - openssl aes-256-cbc -K $encrypted_93975980c32f_key -iv $encrypted_93975980c32f_iv -in frontend-complex-k8s.json.enc -out frontend-complex-k8s.json -d
 #  - curl https://sdk.cloud.google.com | bash > /dev/null;
 
