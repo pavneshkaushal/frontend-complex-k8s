@@ -2,7 +2,9 @@ sudo: required
 services:
   - docker
 python:
-  - "3.8"
+  - 3.8
+  - 3.9
+  - 3.10
 env:
   global:
     - SHA=$(git rev-parse HEAD)
