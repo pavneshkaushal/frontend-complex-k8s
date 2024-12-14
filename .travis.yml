@@ -1,10 +1,12 @@
 sudo: required
 services:
   - docker
-python:
-  - 3.12.0
-#  - 3.9
-#  - 3.10
+addons:
+  apt:
+    sources:
+      - deadsnakes # source required so it finds the package definition below
+    packages:
+      - python3.8
 env:
   global:
     - SHA=$(git rev-parse HEAD)
